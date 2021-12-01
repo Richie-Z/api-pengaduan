@@ -10,13 +10,14 @@ const verifyToken = async (req, res, next) => {
   if (!token) {
     return res.status(403).send("A token is required for authentication");
   }
+  const tokenDB = await jwt_token.findOne({ where: { token: token } });
   try {
     const decoded = verify(token, "secret");
-    const tokenDB = await jwt_token.findOne({ where: { token: token } });
-    if (!tokenDB) throw new Error();
-    req.user = decoded;
+    if (!tokenDB) throw new Error("Blacklisted");
+    req.user = decoded?.user;
     req.jwt_token = token;
   } catch (err) {
+    if (err !== "Blacklisted") tokenDB.destroy();
     return res.status(401).send("Invalid Token");
   }
   return next();
