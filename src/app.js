@@ -8,6 +8,7 @@ import apiRouter from "./routes/api";
 
 var app = express();
 
+app.set("trust proxy", "loopback");
 app.use(logger("dev"));
 app.use(json());
 app.use(urlencoded({ extended: false }));
