@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import ms from "ms";
 import auth from "../middleware/auth";
-import { users, jwt_token } from "../models/index";
+import { users, jwt_token } from "../database/models/index";
 
 const router = Router();
 

@@ -1,5 +1,5 @@
 import { verify } from "jsonwebtoken";
-import { jwt_token } from "../models/index";
+import { jwt_token } from "../database/models/index";
 const verifyToken = async (req, res, next) => {
   const token =
     req.body.token ||
@@ -12,10 +12,10 @@ const verifyToken = async (req, res, next) => {
   }
   try {
     const decoded = verify(token, "secret");
-    req.user = decoded;
-    req.jwt_token = token;
     const tokenDB = await jwt_token.findOne({ where: { token: token } });
     if (!tokenDB) throw new Error();
+    req.user = decoded;
+    req.jwt_token = token;
   } catch (err) {
     return res.status(401).send("Invalid Token");
   }
