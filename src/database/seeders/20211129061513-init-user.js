@@ -3,7 +3,7 @@
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  up: async (queryInterface) => {
     await queryInterface.bulkInsert(
       "users",
       [
@@ -24,7 +24,7 @@ module.exports = {
     );
   },
 
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     await queryInterface.bulkDelete("users", null, {});
   },
 };

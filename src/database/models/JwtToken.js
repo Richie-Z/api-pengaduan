@@ -2,6 +2,7 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class JwtToken extends Model {
+    // eslint-disable-next-line no-unused-vars
     static associate(models) {}
   }
   JwtToken.init(

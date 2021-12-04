@@ -6,7 +6,7 @@ import auth from "../middleware/auth";
 
 const router = Router();
 
-router.get("/", (req, res) => {
+router.get("/", (_req, res) => {
   res.send("Hello World!");
 });
 router.use("/auth", authRouter);

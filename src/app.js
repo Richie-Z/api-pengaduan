@@ -6,7 +6,7 @@ import logger from "morgan";
 import indexRouter from "./routes/index";
 import apiRouter from "./routes/api";
 
-var app = express();
+const app = express();
 
 app.set("trust proxy", "loopback");
 app.use(logger("dev"));

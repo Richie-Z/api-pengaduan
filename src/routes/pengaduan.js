@@ -4,7 +4,7 @@ import {
   PengaduanDetail,
   sequelize,
 } from "../database/models/index";
-var router = Router();
+const router = Router();
 const getIpClient = (ip) => ip.split(":").pop();
 
 router.get("/", async function (req, res) {

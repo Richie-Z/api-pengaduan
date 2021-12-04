@@ -1,15 +1,15 @@
 import { Router } from "express";
 import hasRole from "../middleware/Role";
 
-var router = Router();
+const router = Router();
 
-router.get("/", function (req, res) {
+router.get("/", function (_req, res) {
   res.send("Hello this is user index");
 });
-router.get("/op", hasRole("operator"), function (req, res) {
+router.get("/op", hasRole("operator"), function (_req, res) {
   res.send("Hello this is op index");
 });
-router.get("/admin", hasRole("admin"), function (req, res) {
+router.get("/admin", hasRole("admin"), function (_req, res) {
   res.send("Hello this is admin index");
 });
 
