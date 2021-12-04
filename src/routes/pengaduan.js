@@ -1,23 +1,58 @@
 import { Router } from "express";
-import { pengaduan, pengaduan_detail } from "../database/models/index";
-
+import {
+  Pengaduan,
+  PengaduanDetail,
+  sequelize,
+} from "../database/models/index";
 var router = Router();
 const getIpClient = (ip) => ip.split(":").pop();
 
-router.get("/", function (req, res) {
-  res.json({
-    status: true,
-    message: "Hello this is user index",
-    ip: getIpClient(req.ip),
-  });
+router.get("/", async function (req, res) {
+  try {
+    const pengaduanModel = await Pengaduan.findAll({
+      include: {
+        model: PengaduanDetail,
+        as: "detail",
+        where: { masyarakatIp: getIpClient(req.ip) },
+      },
+    });
+    res.json({
+      status: true,
+      message: "Hello this is user index",
+      data: pengaduanModel,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
 });
 
 router.post("/", async (req, res) => {
-  const { pesan } = req.body;
-  res.json({
-    status: true,
-    pesan,
-    ip: getIpClient(req.ip),
-  });
+  const t = await sequelize.transaction();
+  try {
+    const { isiLaporan } = req.body;
+    const pengaduanModel = await Pengaduan.create(
+      {
+        isiLaporan,
+        status: "belumVerif",
+      },
+      { transaction: t }
+    );
+    await pengaduanModel.createDetail(
+      {
+        masyarakatIp: getIpClient(req.ip),
+      },
+      { transaction: t }
+    );
+    await t.commit();
+    res.json({
+      status: true,
+      message: "Create Pengaduan Success",
+      data: pengaduanModel,
+    });
+  } catch (error) {
+    await t.rollback();
+    res.status(400).json(error);
+  }
 });
 export default router;
