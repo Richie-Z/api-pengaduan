@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import ms from "ms";
 import auth from "../middleware/auth";
-import { users, jwt_token } from "../database/models/index";
+import { User, JwtToken } from "../database/models/index";
 
 const router = Router();
 
@@ -16,10 +16,10 @@ router.post("/login", async (req, res) => {
         message: "Missing Parameter",
       });
     }
-    const user = await users.findOne({ where: { username } });
+    const user = await User.findOne({ where: { username } });
     if (user && (await bcrypt.compare(password, user.password))) {
       const token = jwt.sign({ user }, "secret", { expiresIn: "1h" });
-      await jwt_token.create({
+      await JwtToken.create({
         token: token,
         userId: user.id,
         expiredAt: Date.now() + ms("1h"),
@@ -32,13 +32,25 @@ router.post("/login", async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
+    res.status(401).json(error);
+  }
+});
+router.get("/me", auth, async (req, res) => {
+  try {
+    const { user } = req;
+    res.json({
+      status: true,
+      messages: null,
+      data: user,
+    });
+  } catch (error) {
+    res.status(401).json(error);
   }
 });
 router.delete("/logout", auth, async (req, res) => {
   try {
     const token = req?.jwt_token;
-    await jwt_token.destroy({ where: { token: token } });
+    await JwtToken.destroy({ where: { token: token } });
     return res.json({
       status: true,
       message: "logout success",
