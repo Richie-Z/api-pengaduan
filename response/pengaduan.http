@@ -3,11 +3,10 @@
 ### Get all pengaduan based on client ip
 GET {{url}}/pengaduan
 
-
 ### post
 POST {{url}}/pengaduan HTTP/1.1
 Content-Type: application/json
 
 {
-    "pesan" : ["Hello World", "fun World" ,"Express is fcking"]
+    "isiLaporan" : "Help me, My Dog Is Dying!!"
 }
