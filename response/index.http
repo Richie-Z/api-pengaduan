@@ -1,0 +1,47 @@
+@baseUrl= {{url}}/{{version}}
+
+### Auth
+
+### Login
+POST {{baseUrl}}/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "username" : "richie",
+    "password" : "richie"
+}
+
+### Me
+GET {{baseUrl}}/auth/me HTTP/1.1
+Authorization: {{token}}
+
+### logout
+DELETE {{baseUrl}}/auth/logout HTTP/1.1
+Authorization: {{token}}
+
+### User / Petugas 
+
+### 
+GET {{baseUrl}}/user HTTP/1.1
+Authorization: {{token}}
+
+###
+GET {{baseUrl}}/user/admin HTTP/1.1
+Authorization: {{token}}
+
+###
+GET {{baseUrl}}/user/op HTTP/1.1
+Authorization: {{token}}
+
+### Pengaduan
+
+### Get all pengaduan based on client ip
+GET {{baseUrl}}/pengaduan HTTP/1.1
+
+### post
+POST {{baseUrl}}/pengaduan HTTP/1.1
+Content-Type: application/json
+
+{
+    "isiLaporan" : "Help me, My Dog Is Dying!!"
+}
