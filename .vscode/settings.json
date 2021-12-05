@@ -1,0 +1,19 @@
+{
+    "rest-client.environmentVariables": {
+        "$shared": {
+            "version": "v1",
+            "prodToken": "foo",
+            "nonProdToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjozLCJ1c2VybmFtZSI6InJpY2hpZSIsInBhc3N3b3JkIjoiJDJiJDEwJE1nRkpvWkliMlI0b1NlRXBQblFTS3VxQnU1STlPeEdvUmkyZDhVWGdHMkw5djhpVUJFemVpIiwicm9sZSI6ImFkbWluIiwibmFtZSI6IlJpY2hpZSIsImNyZWF0ZWRBdCI6IjIwMjEtMTEtMjlUMDY6MzE6MzguNTg4WiIsInVwZGF0ZWRBdCI6IjIwMjEtMTEtMjlUMDY6MzE6MzguNTg4WiJ9LCJpYXQiOjE2Mzg2OTExODQsImV4cCI6MTYzODY5NDc4NH0.B4T7KuVeuTQpIpePBWRjq0G9JgCkZ8jtCca4VLHtbic"
+        },
+        "local": {
+            "version": "v1",
+            "url": "http://localhost:3000/api",
+            "token": "{{$shared nonProdToken}}"
+        },
+        "production": {
+            "host": "example.com",
+            "token": "{{$shared prodToken}}",
+            "secretKey": "prodSecret"
+        }
+    }
+}
