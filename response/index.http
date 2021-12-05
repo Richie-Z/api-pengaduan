@@ -1,6 +1,6 @@
 @baseUrl= {{url}}/{{version}}
 
-### Auth
+###ANCHOR  Auth
 
 ### Login
 POST {{baseUrl}}/auth/login HTTP/1.1
@@ -19,7 +19,7 @@ Authorization: {{token}}
 DELETE {{baseUrl}}/auth/logout HTTP/1.1
 Authorization: {{token}}
 
-### User / Petugas 
+###ANCHOR User / Petugas 
 
 ### 
 GET {{baseUrl}}/user HTTP/1.1
@@ -33,7 +33,7 @@ Authorization: {{token}}
 GET {{baseUrl}}/user/op HTTP/1.1
 Authorization: {{token}}
 
-### Pengaduan
+###ANCHOR Pengaduan
 
 ### Get all pengaduan based on client ip
 GET {{baseUrl}}/pengaduan HTTP/1.1
