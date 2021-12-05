@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import ms from "ms";
 import auth from "../middleware/auth";
-import { User, JwtToken } from "../database/models/index";
+import { Petugas, JwtToken } from "../database/models/index";
 
 const router = Router();
 
@@ -16,18 +16,18 @@ router.post("/login", async (req, res) => {
         message: "Missing Parameter",
       });
     }
-    const user = await User.findOne({ where: { username } });
-    if (user && (await bcrypt.compare(password, user.password))) {
-      const token = jwt.sign({ user }, "secret", { expiresIn: "1h" });
+    const petugas = await Petugas.findOne({ where: { username } });
+    if (petugas && (await bcrypt.compare(password, petugas.password))) {
+      const token = jwt.sign({ petugas }, "secret", { expiresIn: "1h" });
       await JwtToken.create({
         token: token,
-        userId: user.id,
+        petugasId: petugas.id,
         expiredAt: Date.now() + ms("1h"),
       });
       res.json({
         status: true,
         messages: null,
-        data: user,
+        data: petugas,
         token: token,
       });
     }
@@ -37,11 +37,11 @@ router.post("/login", async (req, res) => {
 });
 router.get("/me", auth, async (req, res) => {
   try {
-    const { user } = req;
+    const { petugas } = req;
     res.json({
       status: true,
       messages: null,
-      data: user,
+      data: petugas,
     });
   } catch (error) {
     res.status(401).json(error);

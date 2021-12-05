@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       token: DataTypes.TEXT,
       expiredAt: DataTypes.BIGINT,
-      userId: DataTypes.INTEGER,
+      petugasId: DataTypes.INTEGER,
     },
     {
       sequelize,

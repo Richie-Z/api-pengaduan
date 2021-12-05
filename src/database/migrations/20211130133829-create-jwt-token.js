@@ -14,7 +14,7 @@ module.exports = {
       expiredAt: {
         type: Sequelize.BIGINT,
       },
-      userId: {
+      petugasId: {
         type: Sequelize.INTEGER,
       },
       createdAt: {

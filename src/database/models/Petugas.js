@@ -1,11 +1,11 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
+  class Petugas extends Model {
     // eslint-disable-next-line no-unused-vars
     static associate(models) {}
   }
-  User.init(
+  Petugas.init(
     {
       username: DataTypes.STRING,
       password: DataTypes.STRING,
@@ -14,9 +14,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "User",
-      tableName: "users",
+      modelName: "Petugas",
+      tableName: "petugas",
     }
   );
-  return User;
+  return Petugas;
 };

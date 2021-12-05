@@ -17,7 +17,7 @@ const verifyToken = async (req, res, next) => {
     const decoded = verify(token, "secret");
     const tokenDB = await JwtToken.findOne({ where: { token: token } });
     if (!tokenDB) throw new Error();
-    req.user = decoded?.user;
+    req.petugas = decoded?.petugas;
     req.jwt_token = token;
   } catch (err) {
     return res.status(401).json({ status: false, message: "Invalid Token" });
