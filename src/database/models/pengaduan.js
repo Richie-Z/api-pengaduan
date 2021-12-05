@@ -18,7 +18,6 @@ module.exports = (sequelize, DataTypes) => {
     {
       isiLaporan: DataTypes.TEXT,
       lampiran: DataTypes.TEXT,
-      status: DataTypes.ENUM("belumVerif", "proses", "selesai"),
     },
     {
       sequelize,

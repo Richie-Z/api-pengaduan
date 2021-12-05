@@ -18,7 +18,7 @@ router.get("/", async function (req, res) {
     });
     res.json({
       status: true,
-      message: "Hello this is user index",
+      message: "Success get",
       data: pengaduanModel,
     });
   } catch (error) {
@@ -41,6 +41,7 @@ router.post("/", async (req, res) => {
     await pengaduanModel.createDetail(
       {
         masyarakatIp: getIpClient(req.ip),
+        status: "belumVerif",
       },
       { transaction: t }
     );

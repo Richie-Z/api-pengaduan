@@ -11,8 +11,11 @@ module.exports = (sequelize, DataTypes) => {
   PengaduanDetail.init(
     {
       masyarakatIp: DataTypes.TEXT,
-      pengurus: DataTypes.STRING,
       pengaduanId: DataTypes.INTEGER,
+      status: {
+        type: DataTypes.ENUM("belumVerif", "proses", "selesai"),
+        validate: { isIn: ["belumVerif", "proses", "selesai"] },
+      },
     },
     {
       sequelize,
