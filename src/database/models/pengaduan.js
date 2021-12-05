@@ -7,6 +7,11 @@ module.exports = (sequelize, DataTypes) => {
         as: "detail",
         foreignKey: "pengaduanId",
       });
+      Pengaduan.belongsToMany(models.Petugas, {
+        as: "tanggapan",
+        through: models.PengaduanTanggapan,
+        foreignKey: "pengaduanId",
+      });
     }
   }
   Pengaduan.init(

@@ -14,9 +14,6 @@ module.exports = {
       lampiran: {
         type: Sequelize.TEXT,
       },
-      status: {
-        type: Sequelize.ENUM("belumVerif", "proses", "selesai"),
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

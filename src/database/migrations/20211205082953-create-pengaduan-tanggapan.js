@@ -1,7 +1,7 @@
 "use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("pengaduan_details", {
+    await queryInterface.createTable("pengaduan_tanggapans", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -16,11 +16,22 @@ module.exports = {
         },
         onDelete: "CASCADE",
       },
-      masyarakatIp: {
+      petugasId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "petugas",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+      },
+      tanggapan: {
         type: Sequelize.TEXT,
       },
-      status: {
-        type: Sequelize.ENUM("belumVerif", "proses", "selesai"),
+      detailPerubahan: {
+        type: Sequelize.STRING,
+      },
+      lampiran: {
+        type: Sequelize.TEXT,
       },
       createdAt: {
         allowNull: false,
@@ -33,6 +44,6 @@ module.exports = {
     });
   },
   down: async (queryInterface) => {
-    await queryInterface.dropTable("pengaduan_details");
+    await queryInterface.dropTable("pengaduan_tanggapans");
   },
 };
