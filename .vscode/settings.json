@@ -3,7 +3,7 @@
         "$shared": {
             "version": "v1",
             "prodToken": "foo",
-            "nonProdToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjozLCJ1c2VybmFtZSI6InJpY2hpZSIsInBhc3N3b3JkIjoiJDJiJDEwJE1nRkpvWkliMlI0b1NlRXBQblFTS3VxQnU1STlPeEdvUmkyZDhVWGdHMkw5djhpVUJFemVpIiwicm9sZSI6ImFkbWluIiwibmFtZSI6IlJpY2hpZSIsImNyZWF0ZWRBdCI6IjIwMjEtMTEtMjlUMDY6MzE6MzguNTg4WiIsInVwZGF0ZWRBdCI6IjIwMjEtMTEtMjlUMDY6MzE6MzguNTg4WiJ9LCJpYXQiOjE2Mzg2OTExODQsImV4cCI6MTYzODY5NDc4NH0.B4T7KuVeuTQpIpePBWRjq0G9JgCkZ8jtCca4VLHtbic"
+            "nonProdToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwZXR1Z2FzIjp7ImlkIjoxLCJ1c2VybmFtZSI6InJpY2hpZSIsInBhc3N3b3JkIjoiJDJiJDEwJHhPa1lmOGFhVkhUS0FLNVc5azB0ei51Ym5XR3hXOXd4STAyMkE2VjJaZFNndjFMWVYvWUttIiwicm9sZSI6ImFkbWluIiwibmFtZSI6IlJpY2hpZSBaYWthcmlhIiwiY3JlYXRlZEF0IjoiMjAyMS0xMi0wNVQwODo1OTowMy41ODJaIiwidXBkYXRlZEF0IjoiMjAyMS0xMi0wNVQwODo1OTowMy41ODJaIn0sImlhdCI6MTYzODY5NDc5MCwiZXhwIjoxNjM4Njk4MzkwfQ.ni7U6aU498-2VeCnG4WHHnBthFIuRftGStRemTVykho"
         },
         "local": {
             "version": "v1",
