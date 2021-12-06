@@ -19,18 +19,18 @@ Authorization: {{token}}
 DELETE {{baseUrl}}/auth/logout HTTP/1.1
 Authorization: {{token}}
 
-###ANCHOR User / Petugas 
+###ANCHOR Petugas 
 
 ### 
-GET {{baseUrl}}/user HTTP/1.1
+GET {{baseUrl}}/petugas HTTP/1.1
 Authorization: {{token}}
 
 ###
-GET {{baseUrl}}/user/admin HTTP/1.1
+GET {{baseUrl}}/petugas/admin HTTP/1.1
 Authorization: {{token}}
 
 ###
-GET {{baseUrl}}/user/op HTTP/1.1
+GET {{baseUrl}}/petugas/pengaduan/12/belumVerif HTTP/1.1
 Authorization: {{token}}
 
 ###ANCHOR Pengaduan

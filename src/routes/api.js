@@ -1,5 +1,5 @@
 import { Router } from "express";
-import userRouter from "./users";
+import petugasRouter from "./petugas";
 import authRouter from "./auth";
 import pengaduanRouter from "./pengaduan";
 import auth from "../middleware/auth";
@@ -11,5 +11,5 @@ router.get("/", (_req, res) => {
 });
 router.use("/auth", authRouter);
 router.use("/pengaduan", pengaduanRouter);
-router.use("/user", auth, userRouter);
+router.use("/petugas", auth, petugasRouter);
 export default router;
