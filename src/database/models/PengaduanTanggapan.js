@@ -2,8 +2,15 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class PengaduanTanggapan extends Model {
-    // eslint-disable-next-line no-unused-vars
-    static associate(models) {}
+    static associate(models) {
+      PengaduanTanggapan.belongsTo(models.Pengaduan, {
+        foreignKey: "pengaduanId",
+      });
+      PengaduanTanggapan.belongsTo(models.Petugas, {
+        foreignKey: "petugasId",
+        as: "penanggap",
+      });
+    }
   }
   PengaduanTanggapan.init(
     {
@@ -16,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "PengaduanTanggapan",
+      tableName: "pengaduan_tanggapans",
     }
   );
   return PengaduanTanggapan;

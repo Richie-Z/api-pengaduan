@@ -2,12 +2,8 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Petugas extends Model {
-    static associate(models) {
-      Petugas.belongsToMany(models.Pengaduan, {
-        through: models.PengaduanTanggapan,
-        foreignKey: "petugasId",
-      });
-    }
+    // eslint-disable-next-line no-unused-vars
+    static associate(models) {}
   }
   Petugas.init(
     {

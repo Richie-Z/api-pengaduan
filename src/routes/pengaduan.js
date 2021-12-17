@@ -10,11 +10,17 @@ const getIpClient = (ip) => ip.split(":").pop();
 router.get("/", async function (req, res) {
   try {
     const pengaduanModel = await Pengaduan.findAll({
-      include: {
-        model: PengaduanDetail,
-        as: "detail",
-        where: { masyarakatIp: getIpClient(req.ip) },
-      },
+      include: [
+        {
+          model: PengaduanDetail,
+          as: "detail",
+          where: { masyarakatIp: getIpClient(req.ip || req.ips) },
+        },
+        {
+          association: "tanggapan",
+          include: "penanggap",
+        },
+      ],
     });
     res.json({
       status: true,
@@ -53,6 +59,7 @@ router.post("/", async (req, res) => {
     });
   } catch (error) {
     await t.rollback();
+    console.log(error);
     res.status(400).json(error);
   }
 });

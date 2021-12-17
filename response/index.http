@@ -30,7 +30,7 @@ GET {{baseUrl}}/petugas/admin HTTP/1.1
 Authorization: {{token}}
 
 ###
-GET {{baseUrl}}/petugas/pengaduan/12/belumVerif HTTP/1.1
+PUT  {{baseUrl}}/petugas/pengaduan/6/proses HTTP/1.1
 Authorization: {{token}}
 
 ###ANCHOR Pengaduan

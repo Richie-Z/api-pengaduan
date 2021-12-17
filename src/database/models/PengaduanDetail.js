@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       pengaduanId: DataTypes.INTEGER,
       status: {
         type: DataTypes.ENUM("belumVerif", "proses", "selesai"),
-        validate: { isIn: ["belumVerif", "proses", "selesai"] },
+        validate: { isIn: [["belumVerif", "proses", "selesai"]] },
       },
     },
     {
