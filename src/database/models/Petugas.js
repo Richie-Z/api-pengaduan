@@ -8,7 +8,12 @@ module.exports = (sequelize, DataTypes) => {
   Petugas.init(
     {
       username: DataTypes.STRING,
-      password: DataTypes.STRING,
+      password: {
+        type: DataTypes.STRING,
+        get() {
+          return undefined;
+        },
+      },
       role: DataTypes.ENUM("admin", "operator"),
       name: DataTypes.STRING,
     },
