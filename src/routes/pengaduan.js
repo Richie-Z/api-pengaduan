@@ -4,9 +4,17 @@ import {
   PengaduanDetail,
   sequelize,
 } from "../database/models/index";
+import Multer from "multer";
 const router = Router();
 const getIpClient = (ip) => ip.split(":").pop();
-
+const storage = Multer.diskStorage({
+  destination: "./public/files",
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, `${file.fieldname}-${uniqueSuffix}-${file.originalname}`);
+  },
+});
+const upload = new Multer({ storage: storage });
 router.get("/", async function (req, res) {
   try {
     const pengaduanModel = await Pengaduan.findAll({
@@ -33,13 +41,15 @@ router.get("/", async function (req, res) {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", upload.array("lampiran", 6), async (req, res) => {
   const t = await sequelize.transaction();
   try {
     const { isiLaporan } = req.body;
+    const files = req.files.map((x) => x.path);
     const pengaduanModel = await Pengaduan.create(
       {
         isiLaporan,
+        lampiran: JSON.stringify(files),
         status: "belumVerif",
       },
       { transaction: t }
