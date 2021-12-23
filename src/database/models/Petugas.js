@@ -10,9 +10,6 @@ module.exports = (sequelize, DataTypes) => {
       username: DataTypes.STRING,
       password: {
         type: DataTypes.STRING,
-        get() {
-          return undefined;
-        },
       },
       role: DataTypes.ENUM("admin", "operator"),
       name: DataTypes.STRING,
@@ -21,6 +18,14 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "Petugas",
       tableName: "petugas",
+      defaultScope: {
+        attributes: { exclude: ["password"] },
+      },
+      scopes: {
+        withPassword: {
+          attributes: { include: ["password"] },
+        },
+      },
     }
   );
   return Petugas;

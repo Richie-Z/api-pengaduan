@@ -16,7 +16,9 @@ router.post("/login", async (req, res) => {
         message: "Missing Parameter",
       });
     }
-    const petugas = await Petugas.findOne({ where: { username } });
+    const petugas = await Petugas.scope("withPassword").findOne({
+      where: { username },
+    });
     if (petugas && (await bcrypt.compare(password, petugas.password))) {
       const token = jwt.sign({ petugas }, "secret", { expiresIn: "1h" });
       await JwtToken.create({
@@ -32,6 +34,7 @@ router.post("/login", async (req, res) => {
       });
     }
   } catch (error) {
+    console.error(error);
     res.status(401).json(error);
   }
 });
