@@ -4,6 +4,21 @@ import {
   PengaduanDetail,
 } from "../database/models/index";
 
+const getAll = async (_req, res) => {
+  try {
+    const pengaduan = await Pengaduan.findAll({
+      include: "detail",
+    });
+    res.json({
+      status: true,
+      message: "Success",
+      data: pengaduan,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(error);
+  }
+};
 const updateStatus = async (req, res) => {
   const t = await sequelize.transaction();
   try {
@@ -77,4 +92,4 @@ const update = async (req, res) => {
     res.status(500).send(error);
   }
 };
-export { updateStatus, update };
+export { updateStatus, update, getAll };

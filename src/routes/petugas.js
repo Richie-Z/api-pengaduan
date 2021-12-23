@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { updateStatus, update } from "../controller/PetugasController";
+import { updateStatus, update, getAll } from "../controller/PetugasController";
 import hasRole from "../middleware/Role";
 
 const router = Router();
@@ -25,6 +25,6 @@ router.put(
   },
   updateStatus
 );
-
+router.get("/pengaduan/all", getAll);
 router.put("/pengaduan/:pengaduanId(\\d+)/", update);
 export default router;
