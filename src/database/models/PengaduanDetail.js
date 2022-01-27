@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   PengaduanDetail.init(
     {
+      nama: DataTypes.STRING,
       masyarakatIp: DataTypes.TEXT,
       pengaduanId: DataTypes.INTEGER,
       status: {

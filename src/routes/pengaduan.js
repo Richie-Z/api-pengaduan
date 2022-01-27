@@ -44,7 +44,7 @@ router.get("/", async function (req, res) {
 router.post("/", upload.array("lampiran", 6), async (req, res) => {
   const t = await sequelize.transaction();
   try {
-    const { isiLaporan } = req.body;
+    const { isiLaporan, nama } = req.body;
     const files = req.files.map((x) => x.path);
     const pengaduanModel = await Pengaduan.create(
       {
@@ -58,6 +58,7 @@ router.post("/", upload.array("lampiran", 6), async (req, res) => {
       {
         masyarakatIp: getIpClient(req.ip),
         status: "belumVerif",
+        nama: nama
       },
       { transaction: t }
     );
