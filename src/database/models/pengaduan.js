@@ -18,6 +18,15 @@ module.exports = (sequelize, DataTypes) => {
     {
       isiLaporan: DataTypes.TEXT,
       lampiran: DataTypes.TEXT,
+      laporan: {
+        type: DataTypes.VIRTUAL,
+        get() {
+          let fixedLaporan = this.isiLaporan.split(" "),
+            n = fixedLaporan.length;
+          if (n >= 25) fixedLaporan.splice(25, fixedLaporan.length);
+          return `${fixedLaporan.join(" ")}${n >= 25 ? "..." : ""}`;
+        },
+      },
     },
     {
       sequelize,
