@@ -5,9 +5,17 @@ import pengaduanRouter from "./pengaduan";
 import auth from "../middleware/auth";
 
 const router = Router();
+const getIpClient = (ip) => ip.split(":").pop();
 
 router.get("/", (_req, res) => {
   res.send("Hello World!");
+});
+router.get("/myip",(req,res)=>{
+  res.json({
+    status: true,
+    message: "Success",
+    ip:getIpClient(req.ip || req.ips)
+  });
 });
 router.use("/auth", authRouter);
 router.use("/pengaduan", pengaduanRouter);
