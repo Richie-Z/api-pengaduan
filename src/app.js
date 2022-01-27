@@ -1,5 +1,6 @@
 import express, { json, urlencoded } from "express";
 import { join } from "path";
+import cors from "cors"
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 
@@ -10,6 +11,7 @@ const app = express();
 
 app.set("trust proxy", "loopback");
 app.use(logger("dev"));
+app.use(cors())
 app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
