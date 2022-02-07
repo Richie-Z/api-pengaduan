@@ -3,6 +3,7 @@ import {
   sequelize,
   PengaduanDetail,
 } from "../database/models/index";
+import PengaduanException from "../exception/PengaduanException";
 
 const getAll = async (_req, res) => {
   try {
@@ -26,7 +27,10 @@ const updateStatus = async (req, res) => {
     const pengaduan = await Pengaduan.findByPk(pengaduanId, {
       include: "detail",
     });
-    if (!pengaduan) throw { status: false, message: "Pengaduan Not Found" };
+    if (!pengaduan)
+      throw new PengaduanException(
+        `Pengaduan with id ${pengaduanId} not found`
+      );
     statusVerif = statusVerif === "belumverif" ? "belumVerif" : statusVerif;
     await pengaduan.createTanggapan(
       {
@@ -51,7 +55,7 @@ const updateStatus = async (req, res) => {
   } catch (error) {
     await t.rollback();
     console.log(error);
-    res.status(500).send(error);
+    res.status(500).json(error);
   }
 };
 
@@ -68,7 +72,10 @@ const update = async (req, res) => {
     const pengaduan = await Pengaduan.findByPk(pengaduanId, {
       include: "detail",
     });
-    if (!pengaduan) throw { status: false, message: "Pengaduan Not Found" };
+    if (!pengaduan)
+      throw new PengaduanException(
+        `Pengaduan with id ${pengaduanId} not found`
+      );
     let tanggapanObject = {
       petugasId: req?.petugas.id,
       tanggapan: tanggapan ?? "",
@@ -93,7 +100,7 @@ const update = async (req, res) => {
   } catch (error) {
     await t.rollback();
     console.error(error);
-    res.status(500).send(error);
+    res.status(500).json(error);
   }
 };
 
@@ -101,11 +108,14 @@ const deletePengaduan = async (req, res) => {
   try {
     const { pengaduanID } = req.params;
     const pengaduan = await Pengaduan.findByPk(pengaduanID);
-    if (!pengaduan) throw { status: false, message: "Pengaduan Not Found" };
+    if (!pengaduan)
+      throw new PengaduanException(
+        `Pengaduan with id ${pengaduanID} not found`
+      );
     await pengaduan.destroy();
   } catch (error) {
     console.error(error);
-    res.status(500).send(error);
+    res.status(500).json(error);
   }
 };
 export { updateStatus, update, getAll, deletePengaduan };
