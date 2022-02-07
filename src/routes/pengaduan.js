@@ -15,6 +15,11 @@ const storage = Multer.diskStorage({
   },
 });
 const upload = new Multer({ storage: storage });
+function pengaduanException(msg){
+  this.status = false;
+  this.message = msg;
+  this.name = pengaduanException; 
+}
 router.get("/", async function (req, res) {
   try {
     const pengaduanModel = await Pengaduan.findAll({
@@ -51,14 +56,15 @@ router.get("/:pengaduanId(\\d+)", async function (req, res) {
         },
       ],
     });
+    if(!pengaduanModel) throw new pengaduanException(`Pengaduan with id ${pengaduanId} not found`)
     res.json({
       status: true,
       message: "Success get by ID",
-      data: pengaduanModel,
+      data: pengaduanModel?? "hello",
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json(error);
+    res.status(404).json(error);
   }
 });
 
