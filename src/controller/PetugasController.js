@@ -60,14 +60,18 @@ const update = async (req, res) => {
   try {
     let { pengaduanId } = req.params;
     const { tanggapan, statusVerif } = req.body;
-    if (!tanggapan) throw { status: false, message: "Missing Field tanggapan" };
+    if (!tanggapan && !statusVerif)
+      throw {
+        status: false,
+        message: "Missing Field tanggapan or statusVerif",
+      };
     const pengaduan = await Pengaduan.findByPk(pengaduanId, {
       include: "detail",
     });
     if (!pengaduan) throw { status: false, message: "Pengaduan Not Found" };
     let tanggapanObject = {
       petugasId: req?.petugas.id,
-      tanggapan: tanggapan,
+      tanggapan: tanggapan ?? "",
       detailPerubahan: statusVerif
         ? `ubah status verif dari ${pengaduan.detail.status} ke ${statusVerif}`
         : "tambah tanggapan",
@@ -92,4 +96,16 @@ const update = async (req, res) => {
     res.status(500).send(error);
   }
 };
-export { updateStatus, update, getAll };
+
+const deletePengaduan = async (req, res) => {
+  try {
+    const { pengaduanID } = req.params;
+    const pengaduan = await Pengaduan.findByPk(pengaduanID);
+    if (!pengaduan) throw { status: false, message: "Pengaduan Not Found" };
+    await pengaduan.destroy();
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error);
+  }
+};
+export { updateStatus, update, getAll, deletePengaduan };
