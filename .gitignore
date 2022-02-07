@@ -3,3 +3,4 @@ dist/
 yarn-error.log
 .vscode/settings.json
 .vscode/settings.json
+public/files
