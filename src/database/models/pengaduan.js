@@ -23,10 +23,16 @@ module.exports = (sequelize, DataTypes) => {
         get() {
           let fixedLaporan = this.isiLaporan.split(" "),
             n = fixedLaporan.length;
-          if (n >= 25) fixedLaporan.splice(25, fixedLaporan.length);
-          return `${fixedLaporan.join(" ")}${n >= 25 ? "..." : ""}`;
+          if (n >= 8) fixedLaporan.splice(8, fixedLaporan.length);
+          return `${fixedLaporan.join(" ")}${n >= 8 ? "..." : ""}`;
         },
       },
+      createdAt: {
+        type: DataTypes.DATE,
+        get() {
+          return new Date(this.getDataValue("createdAt")).toUTCString().split(" ").splice(0,4).join(" ");
+        }
+      }
     },
     {
       sequelize,
