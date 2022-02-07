@@ -1,6 +1,6 @@
 import express, { json, urlencoded } from "express";
 import { join } from "path";
-import cors from "cors"
+import cors from "cors";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 
@@ -11,11 +11,12 @@ const app = express();
 
 app.set("trust proxy", "loopback");
 app.use(logger("dev"));
-app.use(cors())
+app.use(cors());
 app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(join(__dirname, "../public")));
+// app.use(express.static(join(__dirname, "../public")));
+app.use("/public", express.static(join(__dirname, "../public")));
 
 app.use("/", indexRouter);
 app.use("/api/v1", apiRouter);
