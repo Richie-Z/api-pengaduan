@@ -63,7 +63,9 @@ const createPengaduan = async (req, res) => {
   const t = await sequelize.transaction();
   try {
     const { isiLaporan, nama } = req.body;
-    const files = req.files.map((x) => x.path);
+    const files = req.files.map((x) => {
+      return { filename: x.originalname, location: x.path };
+    });
     const pengaduanModel = await Pengaduan.create(
       {
         isiLaporan,
