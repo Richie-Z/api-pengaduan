@@ -11,6 +11,7 @@ const getPengaduanIP = async (req, res) => {
   try {
     const pengaduanModel = await Pengaduan.findAll({
       attributes: ["id", "laporan", "isiLaporan", "createdAt"],
+      order : [["id","DESC"]],
       include: [
         {
           model: PengaduanDetail,
