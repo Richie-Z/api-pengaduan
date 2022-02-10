@@ -1,12 +1,7 @@
 import { verify } from "jsonwebtoken";
 import { JwtToken } from "../database/models/index";
 const verifyToken = async (req, res, next) => {
-  const token =
-    req.body.token ||
-    req.query.token ||
-    req.headers["x-access-token"] ||
-    req.headers["authorization"];
-
+  const token = req.cookies.token;
   if (!token) {
     return res.status(403).json({
       status: false,

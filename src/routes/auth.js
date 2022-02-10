@@ -26,6 +26,7 @@ router.post("/login", async (req, res) => {
         petugasId: petugas.id,
         expiredAt: Date.now() + ms("1h"),
       });
+      res.cookie("token", token, { httpOnly: true });
       res.json({
         status: true,
         messages: null,
