@@ -3,6 +3,7 @@ import {
   sequelize,
   PengaduanDetail,
 } from "../database/models/index";
+import { unlinkSync, existsSync } from "fs";
 import PengaduanException from "../exception/PengaduanException";
 
 const getAll = async (_req, res) => {
@@ -106,12 +107,21 @@ const update = async (req, res) => {
 
 const deletePengaduan = async (req, res) => {
   try {
-    const { pengaduanID } = req.params;
-    const pengaduan = await Pengaduan.findByPk(pengaduanID);
+    const { pengaduanId } = req.params;
+    const pengaduan = await Pengaduan.findByPk(pengaduanId);
     if (!pengaduan)
       throw new PengaduanException(
-        `Pengaduan with id ${pengaduanID} not found`
+        `Pengaduan with id ${pengaduanId} not found`
       );
+    JSON.parse(pengaduan.lampiran).forEach((element) => {
+      if (existsSync(element.location)) {
+        unlinkSync(element.location);
+      }
+    });
+    res.json({
+      status: true,
+      message: `Success Delete Pengaduan with id ${pengaduanId}`,
+    });
     await pengaduan.destroy();
   } catch (error) {
     console.error(error);
