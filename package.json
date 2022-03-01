@@ -7,7 +7,8 @@
     "clean": "rmdir /q /s dist && mkdir dist",
     "build": "yarn run clean &&  babel ./src --out-dir dist --copy-files",
     "start": "node ./dist/bin/www.js",
-    "serve": "SET DEBUG=api_pengaduan:* & yarn run dev"
+    "serve": "SET DEBUG=api_pengaduan:* & yarn run dev",
+    "test": "jest"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
@@ -29,6 +30,15 @@
     "@babel/core": "^7.16.0",
     "@babel/node": "^7.16.0",
     "@babel/preset-env": "^7.16.4",
-    "nodemon": "^2.0.15"
+    "cross-env": "^7.0.3",
+    "jest": "^27.5.1",
+    "nodemon": "^2.0.15",
+    "superset": "^2.0.1"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   }
 }
