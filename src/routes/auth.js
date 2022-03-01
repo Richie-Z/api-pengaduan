@@ -20,17 +20,19 @@ router.post("/login", async (req, res) => {
       where: { username },
     });
     if (petugas && (await bcrypt.compare(password, petugas.password))) {
-      const token = jwt.sign({ petugas }, "secret", { expiresIn: "1h" });
+      const token = jwt.sign({ petugas }, "secret", { expiresIn: "24h" });
       await JwtToken.create({
         token: token,
         petugasId: petugas.id,
-        expiredAt: Date.now() + ms("1h"),
+        expiredAt: Date.now() + ms("24h"),
       });
       res.cookie("token", token, { httpOnly: true });
+      // eslint-disable-next-line no-unused-vars
+      const { password, ...newPetugas } = petugas;
       res.json({
         status: true,
         messages: null,
-        data: petugas,
+        data: newPetugas,
         token: token,
       });
     }
@@ -42,10 +44,12 @@ router.post("/login", async (req, res) => {
 router.get("/me", auth, async (req, res) => {
   try {
     const { petugas } = req;
+    // eslint-disable-next-line no-unused-vars
+    const { password, ...newPetugas } = petugas;
     res.json({
       status: true,
       messages: null,
-      data: petugas,
+      data: newPetugas,
     });
   } catch (error) {
     res.status(401).json(error);
