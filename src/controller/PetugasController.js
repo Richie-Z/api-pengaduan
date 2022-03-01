@@ -2,6 +2,7 @@ import {
   Pengaduan,
   sequelize,
   PengaduanDetail,
+  Sequelize,
 } from "../database/models/index";
 import { unlinkSync, existsSync } from "fs";
 import PengaduanException from "../exception/PengaduanException";
@@ -128,4 +129,60 @@ const deletePengaduan = async (req, res) => {
     res.status(500).json(error);
   }
 };
-export { updateStatus, update, getAll, deletePengaduan };
+
+const getMembers = async (_req, res) => {
+  try {
+    const members = await PengaduanDetail.findAll({
+      attributes: [
+        [Sequelize.fn("MAX", Sequelize.col("id")), "id"],
+        "nama",
+        "masyarakatIp",
+      ],
+      group: ["nama", "masyarakatIp"],
+    });
+    res.json({
+      status: true,
+      data: members,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: false,
+    });
+  }
+};
+const getMembersPengaduan = async (req, res) => {
+  try {
+    const { memberIP, nama } = req.query;
+    if (!memberIP || !nama)
+      throw new PengaduanException("query memberIP or nama must available");
+
+    const pengaduan = await Pengaduan.findAll({
+      include: [
+        {
+          model: PengaduanDetail,
+          as: "detail",
+          where: { masyarakatIp: memberIP, nama: nama },
+          attributes: ["nama", "masyarakatIp", "status"],
+        },
+      ],
+    });
+    if (!pengaduan)
+      throw new PengaduanException(`Pengaduan with provided query not found`);
+    res.json({
+      status: true,
+      data: pengaduan,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(error);
+  }
+};
+export {
+  updateStatus,
+  update,
+  getAll,
+  deletePengaduan,
+  getMembers,
+  getMembersPengaduan,
+};

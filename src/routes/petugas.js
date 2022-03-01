@@ -1,5 +1,12 @@
 import { Router } from "express";
-import { updateStatus, update, getAll, deletePengaduan } from "../controller/PetugasController";
+import {
+  updateStatus,
+  update,
+  getAll,
+  deletePengaduan,
+  getMembers,
+  getMembersPengaduan,
+} from "../controller/PetugasController";
 import hasRole from "../middleware/Role";
 
 const router = Router();
@@ -28,4 +35,7 @@ router.put(
 router.get("/pengaduan/all", getAll);
 router.put("/pengaduan/:pengaduanId(\\d+)/", update);
 router.delete("/pengaduan/:pengaduanId(\\d+)/", deletePengaduan);
+
+router.get("/members", getMembers);
+router.get("/members/pengaduan", getMembersPengaduan);
 export default router;
