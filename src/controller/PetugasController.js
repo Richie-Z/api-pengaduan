@@ -1,5 +1,6 @@
 import {
   Pengaduan,
+  Petugas,
   sequelize,
   PengaduanDetail,
   Sequelize,
@@ -178,6 +179,32 @@ const getMembersPengaduan = async (req, res) => {
     res.status(500).json(error);
   }
 };
+
+const dashboard = async (req, res) => {
+  try {
+    const petugas = await Petugas.count();
+    const pengaduan = await Pengaduan.count();
+    const members = await PengaduanDetail.findAll({
+      attributes: [
+        [Sequelize.fn("MAX", Sequelize.col("id")), "id"],
+        "nama",
+        "masyarakatIp",
+      ],
+      group: ["nama", "masyarakatIp"],
+    });
+    res.json({
+      status: true,
+      data: {
+        petugas: petugas,
+        pengaduan: pengaduan,
+        members: members.reduce((prev) => (prev += 1), 0),
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(error);
+  }
+};
 export {
   updateStatus,
   update,
@@ -185,4 +212,5 @@ export {
   deletePengaduan,
   getMembers,
   getMembersPengaduan,
+  dashboard,
 };

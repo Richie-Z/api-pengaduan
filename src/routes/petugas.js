@@ -6,6 +6,7 @@ import {
   deletePengaduan,
   getMembers,
   getMembersPengaduan,
+  dashboard,
 } from "../controller/PetugasController";
 import hasRole from "../middleware/Role";
 
@@ -14,6 +15,7 @@ const router = Router();
 router.get("/", function (_req, res) {
   res.json({ status: true, message: "Hello this is petugas index endpoint" });
 });
+router.get("/dashboard", dashboard);
 router.get("/admin", hasRole("admin"), function (_req, res) {
   res.send("Hello this is admin index");
 });
