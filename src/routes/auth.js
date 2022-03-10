@@ -28,11 +28,10 @@ router.post("/login", async (req, res) => {
       });
       res.cookie("token", token, { httpOnly: true });
       // eslint-disable-next-line no-unused-vars
-      const { password, ...newPetugas } = petugas;
       res.json({
         status: true,
-        messages: null,
-        data: newPetugas,
+        message: "Login Success",
+        data: petugas,
         token: token,
       });
     }
@@ -48,7 +47,7 @@ router.get("/me", auth, async (req, res) => {
     const { password, ...newPetugas } = petugas;
     res.json({
       status: true,
-      messages: null,
+      message: null,
       data: newPetugas,
     });
   } catch (error) {
@@ -61,7 +60,7 @@ router.delete("/logout", auth, async (req, res) => {
     await JwtToken.destroy({ where: { token: token } });
     return res.json({
       status: true,
-      message: "logout success",
+      message: "Logout Success",
     });
   } catch (error) {
     return res.json(error);
