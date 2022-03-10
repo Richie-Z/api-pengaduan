@@ -120,11 +120,11 @@ const deletePengaduan = async (req, res) => {
         unlinkSync(element.location);
       }
     });
+    await pengaduan.destroy();
     res.json({
       status: true,
       message: `Success Delete Pengaduan with id ${pengaduanId}`,
     });
-    await pengaduan.destroy();
   } catch (error) {
     console.error(error);
     res.status(500).json(error);
