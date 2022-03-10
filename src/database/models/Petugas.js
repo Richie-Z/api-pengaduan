@@ -3,7 +3,12 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Petugas extends Model {
     // eslint-disable-next-line no-unused-vars
-    static associate(models) {}
+    static associate(models) {
+      Petugas.hasMany(models.PengaduanTanggapan, {
+        foreignKey: "petugasId",
+        as: "tanggapan",
+      });
+    }
   }
   Petugas.init(
     {
