@@ -1,8 +1,11 @@
 import { Router } from "express";
 import petugasRouter from "./petugas";
 import authRouter from "./auth";
+import adminController from "./admin";
+
 import auth from "../middleware/auth";
 import csurf from "csurf";
+import hasRole from "../middleware/Role";
 
 const router = Router();
 const csrfProtection = csurf({ cookie: true });
@@ -26,5 +29,5 @@ router.get("/csrf-token", (req, res) => {
 
 router.use("/auth", authRouter);
 router.use("/petugas", auth, petugasRouter);
-
+router.use("/admin", auth, hasRole("admin"), adminController);
 export default router;
