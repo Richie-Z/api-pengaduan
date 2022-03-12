@@ -67,6 +67,9 @@ const update = async (req, res) => {
   try {
     let { pengaduanId } = req.params;
     const { tanggapan, statusVerif } = req.body;
+    const files = req.files.map((x) => {
+      return { filename: x.originalname, location: x.path };
+    });
     if (!tanggapan && !statusVerif)
       throw {
         status: false,
@@ -82,6 +85,7 @@ const update = async (req, res) => {
     let tanggapanObject = {
       petugasId: req?.petugas.id,
       tanggapan: tanggapan ?? "",
+      lampiran: JSON.stringify(files),
       detailPerubahan: statusVerif
         ? `ubah status verif dari ${pengaduan.detail.status} ke ${statusVerif}`
         : "tambah tanggapan",
