@@ -159,15 +159,14 @@ const getMembers = async (_req, res) => {
 const getMembersPengaduan = async (req, res) => {
   try {
     const { memberIP, nama } = req.query;
-    if (!memberIP || !nama)
-      throw new PengaduanException("query memberIP or nama must available");
-
+    if (!memberIP)
+      throw new PengaduanException("query memberIP must available");
     const pengaduan = await Pengaduan.findAll({
       include: [
         {
           model: PengaduanDetail,
           as: "detail",
-          where: { masyarakatIp: memberIP, nama: nama },
+          where: { masyarakatIp: memberIP, nama: nama ?? null },
           attributes: ["nama", "masyarakatIp", "status"],
         },
       ],
