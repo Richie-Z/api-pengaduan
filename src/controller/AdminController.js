@@ -117,7 +117,19 @@ const deletePetugas = async (req, res) => {
 const detailPetugas = async (req, res) => {
   try {
     const currentPetugas = await Petugas.findByPk(req.params.petugasID, {
-      include: "tanggapan",
+      include: [
+        "tanggapan",
+        {
+          association: "tanggapan",
+          include: [
+            "pengaduan",
+            {
+              association: "pengaduan",
+              include: "detail",
+            },
+          ],
+        },
+      ],
     });
     if (!currentPetugas)
       throw {
