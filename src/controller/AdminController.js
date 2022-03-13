@@ -52,11 +52,11 @@ const createOp = async (req, res) => {
 };
 const updateOp = async (req, res) => {
   try {
-    const { username, password, name } = req.body;
-    if (!username && !password) {
+    const { username, name } = req.body;
+    if (!username) {
       throw {
         status: false,
-        message: "Missing field username and password",
+        message: "Missing field username ",
       };
     }
     const currentPetugas = await Petugas.findByPk(req.params.petugasID);
@@ -80,7 +80,6 @@ const updateOp = async (req, res) => {
       };
     await currentPetugas.update({
       username,
-      password: createPassword(password),
       name,
     });
     res.json({
