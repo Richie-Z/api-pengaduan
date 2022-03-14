@@ -3,7 +3,9 @@ import {
   createPengaduan,
   getPengaduanID,
   getPengaduanIP,
+  updatePengaduan,
 } from "../controller/PengaduanController";
+import { deletePengaduan } from "../controller/PetugasController";
 import Multer from "multer";
 
 const router = Router();
@@ -22,5 +24,8 @@ const upload = new Multer({ storage: storage });
 
 router.get("/", getPengaduanIP);
 router.get("/:pengaduanId(\\d+)", getPengaduanID);
+router.put("/:pengaduanID(\\d+)", upload.array("lampiran", 4), updatePengaduan);
 router.post("/", upload.array("lampiran", 6), createPengaduan);
+router.delete("/:pengaduanId(\\d+)/", deletePengaduan);
+
 export default router;
