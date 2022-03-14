@@ -1,12 +1,14 @@
 import { Router } from "express";
 import {
   updateStatus,
-  update,
   getAll,
   deletePengaduan,
+  deleteTanggapan,
   getMembers,
   getMembersPengaduan,
   dashboard,
+  updateTanggapan,
+  createTanggapan,
 } from "../controller/PetugasController";
 import hasRole from "../middleware/Role";
 import Multer from "multer";
@@ -51,9 +53,15 @@ router.get("/pengaduan/all", getAll);
 router.put(
   "/pengaduan/:pengaduanId(\\d+)/",
   upload.array("lampiran", 6),
-  update
+  createTanggapan
+);
+router.put(
+  "/tanggapan/:tanggapanID(\\d+)/",
+  upload.array("lampiran", 4),
+  updateTanggapan
 );
 router.delete("/pengaduan/:pengaduanId(\\d+)/", deletePengaduan);
+router.delete("/tanggapan/:tanggapanId(\\d+)/", deleteTanggapan);
 
 router.get("/members", getMembers);
 router.get("/members/pengaduan", getMembersPengaduan);

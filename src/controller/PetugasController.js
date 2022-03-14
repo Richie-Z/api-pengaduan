@@ -3,10 +3,44 @@ import {
   Petugas,
   sequelize,
   PengaduanDetail,
+  PengaduanTanggapan,
   Sequelize,
 } from "../database/models/index";
 import { unlinkSync, existsSync } from "fs";
 import PengaduanException from "../exception/PengaduanException";
+
+function deleteFiles(arr) {
+  JSON.parse(arr).forEach((element) => {
+    if (existsSync(element.location)) {
+      unlinkSync(element.location);
+    }
+  });
+}
+const dashboard = async (req, res) => {
+  try {
+    const petugas = await Petugas.count();
+    const pengaduan = await Pengaduan.count();
+    const members = await PengaduanDetail.findAll({
+      attributes: [
+        [Sequelize.fn("MAX", Sequelize.col("id")), "id"],
+        "nama",
+        "masyarakatIp",
+      ],
+      group: ["nama", "masyarakatIp"],
+    });
+    res.json({
+      status: true,
+      data: {
+        petugas: petugas,
+        pengaduan: pengaduan,
+        members: members.reduce((prev) => (prev += 1), 0),
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(error);
+  }
+};
 
 const getAll = async (_req, res) => {
   try {
@@ -23,46 +57,39 @@ const getAll = async (_req, res) => {
     res.status(500).json(error);
   }
 };
-const updateStatus = async (req, res) => {
-  const t = await sequelize.transaction();
+const deletePengaduan = async (req, res) => {
   try {
-    let { pengaduanId, statusVerif } = req.params;
-    const pengaduan = await Pengaduan.findByPk(pengaduanId, {
-      include: "detail",
-    });
+    const { pengaduanId } = req.params;
+    const pengaduan = await Pengaduan.findByPk(pengaduanId);
     if (!pengaduan)
       throw new PengaduanException(
         `Pengaduan with id ${pengaduanId} not found`
       );
-    statusVerif = statusVerif === "belumverif" ? "belumVerif" : statusVerif;
-    await pengaduan.createTanggapan(
-      {
-        petugasId: req?.petugas.id,
-        detailPerubahan: `ubah status verif dari ${pengaduan.detail.status} ke ${statusVerif}`,
-      },
-      { transaction: t }
-    );
-    await PengaduanDetail.update(
-      {
-        status: statusVerif,
-      },
-      { where: { id: pengaduan.detail.id } }
-    );
-    await t.commit();
-
+    deleteFiles(pengaduan.lampiran);
+    const tanggapan = await PengaduanTanggapan.findAll({
+      where: { pengaduanId: pengaduanId },
+    });
+    tanggapan.forEach((el) => {
+      deleteFiles(el.lampiran);
+    });
+    await pengaduan.destroy();
     res.json({
       status: true,
-      message: "Success",
-      data: pengaduan,
+      message: `Success Delete Pengaduan with id ${pengaduanId}`,
     });
   } catch (error) {
-    await t.rollback();
-    console.log(error);
+    console.error(error);
     res.status(500).json(error);
   }
 };
+const updateStatus = async (req, res) => {
+  res.json({
+    status: false,
+    message: "Deprecated",
+  });
+};
 
-const update = async (req, res) => {
+const createTanggapan = async (req, res) => {
   const t = await sequelize.transaction();
   try {
     let { pengaduanId } = req.params;
@@ -110,24 +137,63 @@ const update = async (req, res) => {
     res.status(500).json(error);
   }
 };
-
-const deletePengaduan = async (req, res) => {
+const updateTanggapan = async (req, res) => {
   try {
-    const { pengaduanId } = req.params;
-    const pengaduan = await Pengaduan.findByPk(pengaduanId);
-    if (!pengaduan)
+    const { tanggapan, deletedLampiran } = req.body;
+    const { tanggapanID } = req.params;
+    const currentTanggapan = await PengaduanTanggapan.findByPk(tanggapanID);
+    if (!currentTanggapan)
       throw new PengaduanException(
-        `Pengaduan with id ${pengaduanId} not found`
+        `Tanggapan with id ${tanggapanID} not found`
       );
-    JSON.parse(pengaduan.lampiran).forEach((element) => {
-      if (existsSync(element.location)) {
-        unlinkSync(element.location);
-      }
+    const files = req.files?.map((x) => {
+      return { filename: x.originalname, location: x.path };
     });
-    await pengaduan.destroy();
+    const currentLampiran = JSON.parse(currentTanggapan.lampiran);
+    if (deletedLampiran) {
+      if (typeof deletedLampiran === "string") {
+        if (existsSync(currentLampiran[deletedLampiran].location))
+          unlinkSync(currentLampiran[deletedLampiran].location);
+        currentLampiran.splice(deletedLampiran, 1);
+      }
+      if (typeof deletedLampiran === "object") {
+        deletedLampiran.forEach((val) => {
+          if (existsSync(currentLampiran[val].location))
+            unlinkSync(currentLampiran[val].location);
+        });
+        deletedLampiran
+          .sort((a, b) => b - a)
+          .forEach((val) => currentLampiran.splice(val, 1));
+      }
+    }
+    if (files) files.forEach((x) => currentLampiran.push(x));
+
+    await currentTanggapan.update({
+      tanggapan,
+      lampiran: JSON.stringify(currentLampiran),
+    });
     res.json({
       status: true,
-      message: `Success Delete Pengaduan with id ${pengaduanId}`,
+      message: "Update Tanggapan Success",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(error);
+  }
+};
+const deleteTanggapan = async (req, res) => {
+  try {
+    const { tanggapanId } = req.params;
+    const tanggapan = await PengaduanTanggapan.findByPk(tanggapanId);
+    if (!tanggapan)
+      throw new PengaduanException(
+        `Tanggapan with id ${tanggapanId} not found`
+      );
+    deleteFiles(tanggapan.lampiran);
+    await tanggapan.destroy();
+    res.json({
+      status: true,
+      message: `Success Delete Tanggapan with id ${tanggapanId}`,
     });
   } catch (error) {
     console.error(error);
@@ -183,37 +249,14 @@ const getMembersPengaduan = async (req, res) => {
   }
 };
 
-const dashboard = async (req, res) => {
-  try {
-    const petugas = await Petugas.count();
-    const pengaduan = await Pengaduan.count();
-    const members = await PengaduanDetail.findAll({
-      attributes: [
-        [Sequelize.fn("MAX", Sequelize.col("id")), "id"],
-        "nama",
-        "masyarakatIp",
-      ],
-      group: ["nama", "masyarakatIp"],
-    });
-    res.json({
-      status: true,
-      data: {
-        petugas: petugas,
-        pengaduan: pengaduan,
-        members: members.reduce((prev) => (prev += 1), 0),
-      },
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json(error);
-  }
-};
 export {
   updateStatus,
-  update,
+  createTanggapan,
   getAll,
   deletePengaduan,
   getMembers,
   getMembersPengaduan,
   dashboard,
+  deleteTanggapan,
+  updateTanggapan,
 };
