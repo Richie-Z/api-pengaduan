@@ -121,8 +121,10 @@ const updatePengaduan = async (req, res) => {
         deletedLampiran.forEach((val) => {
           if (existsSync(currentLampiran[val].location))
             unlinkSync(currentLampiran[val].location);
-          currentLampiran.splice(val, 1);
         });
+        deletedLampiran
+          .sort((a, b) => b - a)
+          .forEach((val) => currentLampiran.splice(val, 1));
       }
     }
     if (files) files.forEach((x) => currentLampiran.push(x));
