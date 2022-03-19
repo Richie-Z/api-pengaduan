@@ -10,12 +10,11 @@ const router = Router();
 router.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
-    if (!(username && password)) {
-      res.status(400).json({
+    if (!(username && password))
+      throw {
         status: false,
-        message: "Missing Parameter",
-      });
-    }
+        message: "Missing Paramater.",
+      };
     const petugas = await Petugas.scope("withPassword").findOne({
       where: { username },
     });
@@ -27,8 +26,7 @@ router.post("/login", async (req, res) => {
         expiredAt: Date.now() + ms("24h"),
       });
       res.cookie("token", token, { httpOnly: true });
-      // eslint-disable-next-line no-unused-vars
-      res.json({
+      return res.json({
         status: true,
         message: "Login Success",
         data: petugas,
