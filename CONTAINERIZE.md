@@ -26,3 +26,4 @@ eligible for read-only DB check (needs per-repo DB_DATABASE in overrides.json sm
 
 Smoke results: 2026-11-21T02:21:09+07:00 boot=PASS http=200 db=not verified (no read-only CLI for node-api; health endpoint only)
 Smoke results: 2026-11-21T15:05:18+07:00 boot=PASS http=200 db=not verified (no read-only CLI for node-api; health endpoint only)
+Smoke results: 2026-11-21T21:32:38+07:00 boot=PASS http=200 db=not verified (no read-only CLI for node-api; health endpoint only)
