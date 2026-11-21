@@ -7,7 +7,7 @@ import authRouter from "./auth";
 import adminController from "./admin";
 
 import auth from "../middleware/auth";
-import hasRole from "../middleware/Role";
+import hasRole from "../middleware/role";
 
 const router = Router();
 const csrfProtection = csurf({ cookie: true });

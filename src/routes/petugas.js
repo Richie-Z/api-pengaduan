@@ -10,7 +10,7 @@ import {
   updateTanggapan,
   createTanggapan,
 } from "../controller/PetugasController";
-import hasRole from "../middleware/Role";
+import hasRole from "../middleware/role";
 import Multer from "multer";
 
 const router = Router();
